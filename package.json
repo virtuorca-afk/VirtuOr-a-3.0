@@ -1,0 +1,31 @@
+{
+  "name": "virtuorca",
+  "version": "3.0.0",
+  "productName": "VirtuOrça",
+  "description": "Aplicativo desktop de orçamento de obras",
+  "main": "main.js",
+  "author": "VirtuOrça",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win nsis"
+  },
+  "devDependencies": {
+    "electron": "^39.2.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "br.com.virtuorca.app",
+    "productName": "VirtuOrça",
+    "directories": { "buildResources": "assets", "output": "dist" },
+    "files": ["main.js", "preload.js", "src/**/*", "assets/virtuorca.png"],
+    "win": { "icon": "assets/virtuorca.ico", "target": ["nsis"] },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "VirtuOrça"
+    }
+  }
+}

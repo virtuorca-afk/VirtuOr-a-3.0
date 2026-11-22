@@ -1,0 +1,28 @@
+VIRTUORÇA — BASE DESKTOP 3.0
+
+Esta é a primeira estrutura de empacotamento desktop para Windows, usando a interface HTML de teste mais recente e a identidade visual fornecida.
+
+IMPORTANTE: esta é uma BASE DE DESENVOLVIMENTO, ainda não é uma versão pronta para uso profissional nem uma garantia de segurança total dos orçamentos.
+
+O que esta etapa prepara:
+- Aplicativo Electron com nome VirtuOrça.
+- Ícone da logo no executável e nos atalhos da Área de Trabalho e Menu Iniciar.
+- Perfil de dados do aplicativo separado do navegador comum.
+- Rotina inicial de cópias da pasta de dados do aplicativo a cada 15 minutos e ao fechar.
+- Até 20 cópias retidas na pasta Documentos\VirtuOrça\Backups.
+
+O que ainda precisa ser desenvolvido e testado antes de uso real:
+- Banco SQLite transacional como fonte principal dos orçamentos.
+- Salvamento automático integrado a cada operação de edição, com confirmação de gravação.
+- Histórico por orçamento e restauração granular.
+- Backup consistente com verificação de integridade e teste de restauração.
+- Backup externo (outro disco ou nuvem) para proteger contra falha/roubo do computador.
+- Testes de interrupção de energia, encerramento forçado e recuperação.
+
+Para preparar no Windows com Node.js instalado:
+1. Abra o Prompt de Comando nesta pasta.
+2. Execute: npm install
+3. Execute: npm start
+4. Para gerar o instalador: npm run dist
+
+A interface HTML atual ainda mantém partes do armazenamento original via IndexedDB/localStorage. As cópias desta etapa são uma proteção preliminar, não substituem a futura migração para SQLite.
