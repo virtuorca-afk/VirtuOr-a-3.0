@@ -1,0 +1,51 @@
+
+name: Gerar instalador VirtuOrça Windows
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Baixar arquivos do repositório
+        uses: actions/checkout@v4
+
+      - name: Preparar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Extrair projeto VirtuOrça
+        id: locate
+        shell: pwsh
+        run: |
+          $zip = Get-ChildItem -Path . -Filter "*Marco2.zip" -Recurse | Select-Object -First 1
+          if (-not $zip) {
+            throw "Arquivo ZIP do projeto não encontrado."
+          }
+          New-Item -ItemType Directory -Force -Path "_buildsource" | Out-Null
+          Expand-Archive -Path $zip.FullName -DestinationPath "_buildsource" -Force
+          $pkg = Get-ChildItem "_buildsource" -Filter "package.json" -Recurse |
+            Where-Object { $_.FullName -match "legacy[\\/]desktop" } |
+            Select-Object -First 1
+          if (-not $pkg) {
+            throw "Pasta do aplicativo Desktop não encontrada."
+          }
+          "dir=$($pkg.Directory.FullName)" >> $env:GITHUB_OUTPUT
+
+      - name: Instalar dependências
+        working-directory: ${{ steps.locate.outputs.dir }}
+        run: npm install --no-audit
+
+      - name: Gerar instalador EXE
+        working-directory: ${{ steps.locate.outputs.dir }}
+        run: npm run dist
+
+      - name: Disponibilizar instalador
+        uses: actions/upload-artifact@v4
+        with:
+          name: VirtuOrca-Windows-Installer
+          path: ${{ steps.locate.outputs.dir }}/dist/*.exe
+          if-no-files-found: error
