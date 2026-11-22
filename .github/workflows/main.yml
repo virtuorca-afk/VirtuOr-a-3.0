@@ -21,7 +21,7 @@ jobs:
         id: locate
         shell: pwsh
         run: |
-          $zip = Get-ChildItem -Path . -Filter "*Marco2.zip" -Recurse | Select-Object -First 1
+          $zip = Get-ChildItem -Path . -Filter "*Marco2*.zip" -Recurse | Select-Object -First 1
           if (-not $zip) {
             throw "Arquivo ZIP do projeto não encontrado."
           }
